@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "client": "cd client && npm run start-client",
+    "server": "cd server && npm run start-server",
+    "client-i": "cd client && npm install",
+    "server-i": "cd server && npm install"
+  }
+}
