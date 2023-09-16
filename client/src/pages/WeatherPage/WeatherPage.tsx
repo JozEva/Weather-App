@@ -1,7 +1,10 @@
-const WeatherPage = () => {
-  return (
-    <div>WeatherPage</div>
-  )
-}
+import { useWeatherData } from "../../api/queryHook";
 
-export default WeatherPage
+const WeatherPage = () => {
+  const { data } = useWeatherData("Kaunas");
+
+  console.log(data);
+  return <div>WeatherPage</div>;
+};
+
+export default WeatherPage;
