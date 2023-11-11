@@ -1,39 +1,24 @@
+import { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { InputForm } from "../../components/InputForm/InputForm";
-import { useEffect, useState } from "react";
-import { getWeather } from "../../api/weatherApi";
 import { useWeatherPageStyles } from "./styles";
+import { TodaysForecastCard } from "../../components/TodaysForecastCard/TodaysForecastCard";
+import { useWeather } from "../../contexts/WeatherDataContext";
+import { AirConditions } from "../../components/AirConditions/AirConditions";
 
 const WeatherPage = () => {
   const { classes } = useWeatherPageStyles();
-  const [searchValue, setSearchValue] = useState<string>("Kaunas");
   const [inputLocation, setInputLocation] = useState<string>("");
-  const [data, setData] = useState<any>();
-  console.log(data);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const weatherData = await getWeather(searchValue);
-        setData(weatherData);
-      } catch (error) {
-        console.error("Fetched error", error);
-      }
-    };
-
-    fetchData();
-
-    const intervalId = setInterval(fetchData, 60000);
-
-    return () => clearInterval(intervalId);
-  }, [searchValue]);
+  const { weatherData, setSearchValue } = useWeather();
 
   const handleSearchCities = async (e: any) => {
     e.preventDefault();
     setSearchValue(!inputLocation ? "Kaunas" : inputLocation);
   };
+
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", userSelect: 'none' }}>
       <Box>
         <form onSubmit={handleSearchCities}>
           <InputForm
@@ -51,25 +36,29 @@ const WeatherPage = () => {
         >
           <Box sx={{ position: "relative" }}>
             <Typography className={classes.headerText} variant="h3">
-              {data?.location?.name}
+              {weatherData?.location?.name}
             </Typography>
             <Typography className={classes.subText}>
-              Current weather condition: <b>{data?.current?.condition?.text}</b>
+              Current weather condition:{" "}
+              <b>{weatherData?.current?.condition?.text}</b>
             </Typography>
             <Typography className={classes.subText}>
-              Local time: <b>{data?.location.localtime}</b>
+              Local time: <b>{weatherData?.location.localtime.substring(11, 16)}</b>
             </Typography>
             <Typography variant="h1" className={classes.celsius}>
-              {data?.current?.temp_c}°
+              {weatherData?.current?.temp_c}°
             </Typography>
           </Box>
           <Box
-            sx={{ width: "300px" }}
+            sx={{ width: "250px" }}
             component="img"
-            src={data?.current?.condition?.icon}
+            src={weatherData?.current?.condition?.icon}
           />
         </Box>
       </Box>
+      <TodaysForecastCard />
+      <br />
+      <AirConditions />
     </Box>
   );
 };

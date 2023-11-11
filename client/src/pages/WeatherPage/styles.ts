@@ -2,17 +2,19 @@ import { makeStyles } from "tss-react/mui";
 
 export const useWeatherPageStyles = makeStyles()(() => ({
   headerText: {
-    fontSize: "3.5rem",
+    display: "flex",
+    flexDirection: "column",
+    fontSize: "40px",
     fontWeight: "bold",
   },
   subText: {
-    fontSize: "0.9rem",
-    color: '#959698',
+    fontSize: "16px",
+    color: "#959698",
   },
   celsius: {
+    fontSize: "64px",
     fontWeight: "bold",
     position: "absolute",
     bottom: 0,
   },
-  
 }));
